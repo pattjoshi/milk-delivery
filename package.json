@@ -1,0 +1,19 @@
+{
+  "name": "milk-deliveri-rest-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+ 
+  "scripts": {
+    "dev": "nodemon  -r esm src/server.js",
+    "start": "NODE_ENV=production node -r esm src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "esm": "^3.2.25",
+    "express": "^4.18.1",
+    "mongoose": "^6.5.2"
+  }
+}
