@@ -25,7 +25,10 @@ app.get("/milkOrder/:date", async (req, res) => {
   try {
     const Date = req.params.date;
     // console.log(Date);
-    const milkOrder = await MilkOrders.find({ date: Date });
+    const milkOrder = await MilkOrders.find({})
+      .sort({ createdAt: "desc" })
+      .exec();
+    console.log(milkOrder);
     res.status(201).send(milkOrder);
   } catch (error) {
     res.status(400).send(error.message);
