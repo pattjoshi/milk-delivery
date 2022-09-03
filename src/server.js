@@ -1,5 +1,6 @@
 import express from "express";
 require("./db/conn");
+import mongoose from "mongoose";
 
 const MilkOrders = require("./models/milkOrder");
 
@@ -19,30 +20,49 @@ app.post("/milkOrder", async (req, res) => {
   }
 });
 
-// GET: get all orders for particular date.
-
-app.get("/milkOrder/:date", async (req, res) => {
+// put : toupdate an order
+app.put("/milkOrder/:id", async (req, res) => {
   try {
-    const Date = req.params.date;
-    // console.log(Date);
-    const milkOrder = await MilkOrders.find({})
-      .sort({ createdAt: "desc" })
-      .exec();
-    console.log(milkOrder);
-    res.status(201).send(milkOrder);
+    const milkOrder = await MilkOrders.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    if (!milkOrder) {
+      return res.status(404).send("No order found");
+    }
+    res.status(200).send(milkOrder);
   } catch (error) {
     res.status(400).send(error.message);
   }
 });
 
-// put : to update the order.
-app.put("/milkOrder/:id", async (req, res) => {
+// get all orders
+// app.get("/milkOrder", async (req, res) => {
+//   try {
+//     const milkOrder = await MilkOrders.find({});
+//     res.status(200).send(milkOrder);
+//   } catch (error) {
+//     res.status(400).send(error.message);
+//   }
+// });
+
+// get all order for partucular date
+app.get("/milkOrder/:date", async (req, res) => {
   try {
-    const id = req.params.id;
-    const milkOrder = await MilkOrders.findByIdAndUpdate(id, req.body, {
-      new: true,
+    const milkOrder = await MilkOrders.find({
+      createdAt: {
+        $gte: new Date(req.params.date),
+
+        $lt: new Date(req.params.date).setDate(
+          new Date(req.params.date).getDate() + 1
+        ), // 1 day after
+      },
     });
-    res.status(201).send(milkOrder);
+    res.status(200).send(milkOrder);
   } catch (error) {
     res.status(400).send(error.message);
   }
