@@ -41,16 +41,16 @@ app.put("/milkOrder/:id", async (req, res) => {
 });
 
 // get all orders
-// app.get("/milkOrder", async (req, res) => {
-//   try {
-//     const milkOrder = await MilkOrders.find({});
-//     res.status(200).send(milkOrder);
-//   } catch (error) {
-//     res.status(400).send(error.message);
-//   }
-// });
+app.get("/milkOrder", async (req, res) => {
+  try {
+    const milkOrder = await MilkOrders.find({});
+    res.status(200).send(milkOrder);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
 
-// get all order for partucular date
+// get  order for partucular date
 app.get("/milkOrder/:date", async (req, res) => {
   try {
     const milkOrder = await MilkOrders.find({
