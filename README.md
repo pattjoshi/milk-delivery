@@ -41,3 +41,25 @@ This command will install all the required dependancies.
 <img width="793" alt="image" src="https://user-images.githubusercontent.com/78966839/185760789-1a65bc9e-7a1b-489b-8d97-679b0cbae306.png">
 
 
+```
+// get  order for partucular date
+app.get("/milkOrder/:date", async (req, res) => {
+  try {
+    const milkOrder = await MilkOrders.find({
+      createdAt: {
+        $gte: new Date(req.params.date),
+
+        $lt: new Date(req.params.date).setDate(
+          new Date(req.params.date).getDate() + 1
+        ), // 1 day after
+      },
+    });
+    res.status(200).send(milkOrder);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+```
+
+
